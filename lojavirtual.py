@@ -1,26 +1,27 @@
+from random import randint
+produtos = {}
+cadastro = {}
+listaprodutos = []
+try:
+    with open("produtos.txt", "r") as arquivo:
+        for linha in arquivo:
+            nome, preco = linha.strip().split(",")
+            listaprodutos.append({"PRODUTO": nome, "VALOR": float(preco)})
+except FileNotFoundError:
+    pass
+listacadastro = []
+
+
 def l ():
     print("="*40)
 
-menu4 = 0
+
 def e():
     print()
 
-produtos = {}
-listaprodutos = []
-while True:
-    l()
-    print(" "*13,"LELIS BEAUTY")
-    l()
-    print(" "*11,"Seja bem-vindo(a)")
-    e()
-    print("Para acessar:")
-    print("[1] LOJA VIRTUAL")
-    print("[2] ÁREA DO CLIENTE")
-    print("[3] ÁREA DO VENDEDOR")
-    l()
-    menu1 = int(input("Digite a opção escolhida: "))
-    if menu1 == 3:
-            while True:
+
+def area_vendedor():
+    while True:
                     l()
                     print(" "*11,"ÁREA DO VENDEDOR")
                     l()
@@ -36,9 +37,13 @@ while True:
                     l()
                     if menu2 == 1:
                         while True:
-                            produtos["Nome: "] = str(input("Produto: "))
-                            produtos["Valor R$: "] = float(input("Valor R$: "))
+                            produtos = {}
+                            produtos["PRODUTO"] = str(input("Produto: "))
+                            produtos["VALOR"] = float(input("Valor R$: "))
                             listaprodutos.append(produtos.copy())
+                            with open("produtos.txt","a") as arquivo:
+                                 arquivo.write(f"{produtos['PRODUTO']},{produtos['VALOR']}\n")
+                                 
                             print("PRODUTO ADICIONADO COM SUCESSO!")
                             l()
                             menu3 = int(input("[1] ADICIONAR NOVO PRODUTO [2] VOLTAR AO MENU: "))
@@ -58,6 +63,131 @@ while True:
                             elif menu4 == 2:
                                 print("ENCERRANDO...")
                                 exit()
+
+                    elif menu2 == 3:
+                        for i,v in enumerate(listaprodutos):
+                            print(f"{i}-> {v['PRODUTO']} - {v['VALOR' \
+                            '']}")
+                        l()
+                        menu7 = int(input("Qual a numeração do produto que deseja alterar?"))
+                        if menu7 >= 0 and menu7 < len(listaprodutos):
+                            produtoalterado = listaprodutos[menu7]
+                            print(f"Produto selecionado -> {produtoalterado}")
+                            menu8 = str(input(f"Qual informação você deseja alterar {produtoalterado.keys()} (Digite tudo em MAIÚSCULO): ")).strip()
+                            if menu8 in produtoalterado:
+                                if menu8.lower() == "valor":
+                                    novovalor = float(input("Novo valor: "))
+                                else:
+                                    novovalor = input("Novo nome:")
+                            produtoalterado[menu8] = novovalor
+                            print(f"PRODUTO ALTERADO COM SUCESSO! - {produtoalterado}")
+
+                        else:
+                            print("Campo inválido!")
+
+                    elif menu2 == 4:
+                        l()
+                        print("LISTA DE PRODUTOS")
+                        l()
+                        
+                        for i , v in enumerate(listaprodutos):
+                            print(f"{i} - {v}")
+                        menu9 = int(input("Código do produto que será excluído: "))
+                        del listaprodutos[menu9]
+                        print("PRODUTO REMOVIDO!")
+                        for i , v in enumerate(listaprodutos):
+                            print(f"{i} - {v}")
+
+                    
+                    elif menu2 == 5:
+                         l()
+                         print("LISTA DE CLIENTES CADASTRADOS")
+                         l()
+                         for i,v in enumerate(listacadastro):
+                              print(f"{i} -> ID({v['ID']}) - Cliente: {v['Nome']}")
+                            
+                        
                     elif menu2 == 6:
-                        break                      
+                        break
+
+
+def loja_virtual():
+        l()
+        print(f" "*3,"BEM VINDO(A) A NOSSA LOJA VIRTUAL")
+        l()
+        print("Confira nossos produtos:")
+        for i, v in enumerate(listaprodutos):
+            print(f"{i+1} - > {v['PRODUTO']}  | {v['VALOR']}")
+            l()
+        while True:
+            menu5 = str(input("RETORNAR AO MENU PRINCIPAL [1]SIM [2]NÃO :" ))
+            if menu5 == "1":
+                break
+            elif menu5 == "2":
+                print("Obrigado! Encerrando....")
+                exit()
+            else:
+                print("ERRO! Digite novamente!")
+                continue
+
+
+def area_cliente():
+    while True:
+            cadastro = {}
+            l()
+            print(" "*8,"ÁREA DO CLIENTE")
+            print(" "*7,"Seja bem vindo(a)")
+            l()
+            print("[0] Já sou cliente. \n[1] Quero me cadastrar \n[2] Voltar ao Menu Principal")
+            menu10 = int(input("Qual a opção desejada: "))
+            if menu10 == 0:
+                 print("")
+            if menu10 == 1:
+                    l()
+                    print(" "*3,"PARA SE CADASTRAR, \nPREENCHA TODAS AS LINHAS!: ")
+                    cadastro['Nome'] = str(input("Nome completo: ")).strip()
+                    cadastro['Nascimento'] = str(input('Data de nascimento(00/00/00): ')).strip()
+                    cadastro['Celular'] = str(input("Digite seu celular (00)00000-0000: ")).strip()
+                    cadastro['E-mail'] = str(input("E-mail: ")).strip()
+                    cadastro['Senha'] = str(input("Senha(Até 8 caracteres): "))
+                    cadastro['ID'] = randint(10000,99999)
+                    listacadastro.append(cadastro.copy())
+                    print(f"CADASTRO REALIZADO COM SUCESSO! - {listacadastro}")
+                    print(f"O seu ID de acesso é {cadastro["ID"]}. Utilize o ID + Senha para entrar.")
+                    while True:
+                        menu11 = int(input("[1] ÁREA DO CLIENTE [2] LOJA VIRTUAL: "))
+                        if menu11 == 1:
+                            break
+                        elif menu11 == 2:
+                            loja_virtual()
+                        else:
+                            print("ERRO! Digite 1 ou 2.")             
+            if menu10 == 2:
+                break
+
+
+
+while True:
+    l()
+    print(" "*13,"LELIS BEAUTY")
+    l()
+    print(" "*11,"Seja bem-vindo(a)")
+    e()
+    print("Para acessar:")
+    print("[1] LOJA VIRTUAL")
+    print("[2] ÁREA DO CLIENTE")
+    print("[3] ÁREA DO VENDEDOR")
+    l()
+    menu1 = int(input("Digite a opção escolhida: "))
+
+    if menu1 == 1:
+        loja_virtual()
+    
+    if menu1 == 2:
+         area_cliente()
+            
+
+    if menu1 == 3:
+        area_vendedor()
+
                     
