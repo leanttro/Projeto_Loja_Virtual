@@ -33,9 +33,9 @@ def area_vendedor():
                     print("[5] CADASTRO DE CLIENTES")
                     print("[6] VOLTAR AO MENU PRINCIPAL")
                     l()
-                    menu2 = int(input("Digite a opção escolhida: "))
+                    menu2 = str(input("Digite a opção escolhida: "))
                     l()
-                    if menu2 == 1:
+                    if menu2 == "1":
                         while True:
                             produtos = {}
                             produtos["PRODUTO"] = str(input("Produto: "))
@@ -46,12 +46,12 @@ def area_vendedor():
                                  
                             print("PRODUTO ADICIONADO COM SUCESSO!")
                             l()
-                            menu3 = int(input("[1] ADICIONAR NOVO PRODUTO [2] VOLTAR AO MENU: "))
-                            if menu3 == 1:
+                            menu3 = str(input("[1] ADICIONAR NOVO PRODUTO [2] VOLTAR AO MENU: "))
+                            if menu3 == "1":
                                 continue
-                            if menu3 == 2:
+                            if menu3 == "2":
                                 break
-                    elif menu2 == 2:
+                    elif menu2 == "2":
                         while True:
                             for k in listaprodutos:
                                 for i,v in k.items():
@@ -64,7 +64,7 @@ def area_vendedor():
                                 print("ENCERRANDO...")
                                 exit()
 
-                    elif menu2 == 3:
+                    elif menu2 == "3":
                         for i,v in enumerate(listaprodutos):
                             print(f"{i}-> {v['PRODUTO']} - {v['VALOR' \
                             '']}")
@@ -85,7 +85,7 @@ def area_vendedor():
                         else:
                             print("Campo inválido!")
 
-                    elif menu2 == 4:
+                    elif menu2 == "4":
                         l()
                         print("LISTA DE PRODUTOS")
                         l()
@@ -99,7 +99,7 @@ def area_vendedor():
                             print(f"{i} - {v}")
 
                     
-                    elif menu2 == 5:
+                    elif menu2 == "5":
                          l()
                          print("LISTA DE CLIENTES CADASTRADOS")
                          l()
@@ -107,7 +107,7 @@ def area_vendedor():
                               print(f"{i} -> ID({v['ID']}) - Cliente: {v['Nome']}")
                             
                         
-                    elif menu2 == 6:
+                    elif menu2 == "6":
                         break
 
 
@@ -138,31 +138,53 @@ def area_cliente():
             print(" "*8,"ÁREA DO CLIENTE")
             print(" "*7,"Seja bem vindo(a)")
             l()
-            print("[0] Já sou cliente. \n[1] Quero me cadastrar \n[2] Voltar ao Menu Principal")
-            menu10 = int(input("Qual a opção desejada: "))
-            if menu10 == 0:
-                 print("")
-            if menu10 == 1:
+            print("[1] Já sou cliente. \n[2] Quero me cadastrar \n[3] Voltar ao Menu Principal")
+            menu10 = str(input("Qual a opção desejada: "))
+            if menu10 == "1":
+                l()
+                print(" "*6,"ÁREA DE LOGIN")
+                l()
+                login = int(input("NÚMERO DE CADASTRO: "))
+                senha = str(input("SENHA: "))
+                if login and senha not in listacadastro:
+                     print("ERRO!")
+                if login and senha in listacadastro:
+                    print("ACESSO LIBERADO")
+
+            if menu10 == "2":
                     l()
-                    print(" "*3,"PARA SE CADASTRAR, \nPREENCHA TODAS AS LINHAS!: ")
+                    print(" "*10,"ÁREA DE CADASTRO ")
+                    l()
                     cadastro['Nome'] = str(input("Nome completo: ")).strip()
                     cadastro['Nascimento'] = str(input('Data de nascimento(00/00/00): ')).strip()
                     cadastro['Celular'] = str(input("Digite seu celular (00)00000-0000: ")).strip()
                     cadastro['E-mail'] = str(input("E-mail: ")).strip()
-                    cadastro['Senha'] = str(input("Senha(Até 8 caracteres): "))
-                    cadastro['ID'] = randint(10000,99999)
-                    listacadastro.append(cadastro.copy())
-                    print(f"CADASTRO REALIZADO COM SUCESSO! - {listacadastro}")
-                    print(f"O seu ID de acesso é {cadastro["ID"]}. Utilize o ID + Senha para entrar.")
                     while True:
-                        menu11 = int(input("[1] ÁREA DO CLIENTE [2] LOJA VIRTUAL: "))
-                        if menu11 == 1:
+                        cadastro['Senha'] = str(input("Senha(Até 8 caracteres): "))
+                        cadastro['SenhaConf'] = str(input("Digite a Senha novamente: "))
+                        if cadastro["Senha"] != cadastro["SenhaConf"]:
+                             print("SENHAS DIVERGENTES, DIGITE NOVAMENTE!")
+                             continue
+                        elif len(cadastro["Senha"]) > 8:
+                             print("ERRO! SENHA COM ATÉ 8 CARACTERES SOMENTE")
+                             continue
+                        else:                             
+                            cadastro['ID'] = randint(10000,99999)
+                            listacadastro.append(cadastro.copy())
+                            print(f"CADASTRO REALIZADO COM SUCESSO!")
+                            l()
+                            print(f"O seu ID de acesso é {cadastro["ID"]}. \nUtilize o ID {cadastro['ID']} + Senha {cadastro['Senha']} para entrar.")
+                            l()
                             break
-                        elif menu11 == 2:
-                            loja_virtual()
-                        else:
-                            print("ERRO! Digite 1 ou 2.")             
-            if menu10 == 2:
+                    while True:
+                            menu11 = str(input("[1] ÁREA DO CLIENTE [2] LOJA VIRTUAL: "))
+                            if menu11 == "1":
+                                break
+                            elif menu11 == "2":
+                                loja_virtual()
+                            else:
+                                print("ERRO! Digite 1 ou 2.")             
+            if menu10 == "3":
                 break
 
 

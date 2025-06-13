@@ -1,0 +1,6 @@
+Shampoo,14.5
+Condicionador,13.5
+Sabonete,2.5
+Shampoo,14.5
+Condicionador,15.0
+Sbonete,3.0
